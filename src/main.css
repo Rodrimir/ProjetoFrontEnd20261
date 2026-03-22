@@ -1,0 +1,143 @@
+/* Estilos Globais e Definição de Temas */
+
+:root {
+  /* light mode (default)
+  
+     @audit-ok - 5.8 Design e Consistência */
+
+  /* Cores de estilo */
+
+  --cor-primaria: #667eea;
+  --cor-primaria-hover: #5568d3;
+  --cor-secundaria: #764ba2;
+  
+  /* Cores de Fundo */
+
+  --fundo-pagina: #f9fafb;    
+  --fundo-cartao: #ffffff;    
+  --fundo-entrada: #ffffff;    
+  --fundo-hover: #f3f4f6;   
+
+  /* Cores de Texto */
+
+  --texto-primario: #1f2937; 
+  --texto-secundario: #6b7280;
+  --texto-inverso: #ffffff; 
+  
+  /* Bordas e Divisórias */
+
+  --cor-borda: #e5e7eb;
+  --borda-foco: rgba(102, 126, 234, 0.4);
+
+  /* Feedback */
+
+  --cor-sucesso: #10b981;
+  --cor-perigo: #ef4444;
+  --cor-aviso: #f59e0b;
+  
+  /* Sombras */
+
+  --sombra-p: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --sombra-m: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --sombra-g: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* texto Global */
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Renderização */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* dark mode */
+
+/* @audit-info 2.3 - Interatividade com JavaScript aplicando o tema sem reload de pagina */
+
+[data-theme="dark"] {
+  /* Cores de estilo */
+  --cor-primaria: #818cf8;     
+  --cor-primaria-hover: #6366f1;
+  --cor-secundaria: #a78bfa;
+
+  /* Cores de Fundo */
+  --fundo-pagina: #111827;  
+  --fundo-cartao: #1f2937;   
+  --fundo-entrada: #374151;    
+  --fundo-hover: #374151;   
+
+  /* Cores de Texto */
+  --texto-primario: #f9fafb; 
+  --texto-secundario: #9ca3af;
+  
+  /* Bordas */
+  --cor-borda: #374151; 
+
+  /* Sombras */
+  --sombra-p: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --sombra-m: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --sombra-g: 0 10px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* estrututura */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: var(--fundo-pagina);
+  color: var(--texto-primario);
+  min-width: 320px;
+}
+
+/* globais */
+a {
+  font-weight: 500;
+  color: var(--cor-primaria);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+/* @audit-ok - 5.3  CSS Modular e Organizado
+ */
+a:hover {
+  color: var(--cor-secundaria);
+  text-decoration: underline;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--cor-primaria);
+  color: var(--texto-inverso);
+  cursor: pointer;
+  transition: background-color 0.25s, transform 0.2s;
+}
+
+/* @audit-ok - 5.3  CSS Modular e Organizado */
+button:hover {
+  background-color: var(--cor-primaria-hover);
+}
+
+/* @audit-ok - 5.1 Acessibilidade */
+button:focus-visible {
+  outline: 2px solid var(--cor-primaria);
+  outline-offset: 2px;
+}
