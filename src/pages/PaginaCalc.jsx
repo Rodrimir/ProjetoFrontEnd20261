@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CardImc } from '../calc/CalcImc.jsx';
+import { CardImc } from '../components/calc/CalcImc.jsx';
 import './PaginaCalc.css';
 
 export const PaginaCalc = () => {

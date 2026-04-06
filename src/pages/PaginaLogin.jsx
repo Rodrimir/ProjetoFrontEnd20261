@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { BotaoLoginGoogle } from '../common/GoogleButton'; 
-import { CarregadorSpinner } from '../common/LoadSpinner';  
+import { BotaoLoginGoogle } from '../components/common/GoogleButton'; 
+import { CarregadorSpinner } from '../components/common/LoadSpinner';  
 import './PaginaLogin.css';
 
 export const PaginaLogin = () => {

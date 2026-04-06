@@ -1,0 +1,9 @@
+.container-todo-page {
+  width: 100%;
+  max-width: 600px;
+  background-color: #1a1a1a;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  margin-top: 50px;
+}

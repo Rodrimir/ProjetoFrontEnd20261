@@ -8,7 +8,7 @@ export const CardImc = ({ nm, alt, ps }) => {
     const final = calc.toFixed(2);
     
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
+    useEffect(() => {
     if (calc <= 24.5) {
       setColor('#86efac'); 
     } else if (calc > 24.5 && calc < 30) {
