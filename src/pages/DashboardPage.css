@@ -1,0 +1,308 @@
+/* Página de Rotina */
+.container-pagina-rotina {
+  min-height: 100vh;
+  background-color: var(--fundo-pagina);
+}
+
+/* Estilização do ícone */
+.icone-vazio {
+  color: var(--texto-secundario); 
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+  opacity: 0.5; 
+  font-size: 48px;
+}
+
+/* para o wrapper do form não quebre o layout */
+.wrapper-secao-formulario {
+  width: 100%;
+}
+
+/* header */
+.cabecalho-rotina {
+  background: var(--fundo-cartao);
+  border-bottom: 1px solid var(--cor-borda);
+  box-shadow: var(--sombra-p);
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.cabecalho-rotina .conteudo-cabecalho {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cabecalho-rotina h1 {
+  color: var(--texto-primario);
+  font-size: 24px;
+  margin: 0;
+}
+
+.acoes-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.botao-painel {
+  background: var(--fundo-pagina);
+  color: var(--texto-primario);
+  border: 1px solid var(--cor-borda);
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.botao-painel:hover {
+  background: var(--fundo-hover);
+  border-color: var(--cor-primaria);
+}
+
+.info-usuario {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-usuario {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--cor-borda);
+}
+
+.nome-usuario {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--texto-primario);
+}
+
+.botao-sair {
+  background: var(--cor-perigo);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.botao-sair:hover {
+  filter: brightness(0.9);
+}
+
+/* Área principal */
+.principal-rotina {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.botao-voltar {
+  background: var(--fundo-cartao);
+  border: 1px solid var(--cor-borda);
+  color: var(--texto-primario);
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.botao-voltar:hover {
+  background: var(--fundo-hover);
+}
+
+/* Barra de Ferramentas */
+.barra-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.botao-nova-rotina {
+  background: var(--cor-primaria);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.botao-compartilhar:hover {
+  background-color: #25D366; /* WhatsApp */
+  color: white;
+  border-color: #25D366;
+}
+
+.botao-nova-rotina:hover {
+  background: var(--cor-primaria-hover);
+  transform: translateY(-2px);
+}
+
+/* cards de rotina */
+.lista-rotinas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.cartao-rotina {
+  background: var(--fundo-cartao);
+  border-radius: 12px;
+  box-shadow: var(--sombra-p);
+  overflow: hidden;
+  transition: all 0.3s;
+  border-left: 5px solid; 
+}
+
+.cartao-rotina:hover {
+  box-shadow: var(--sombra-m);
+  transform: translateY(-2px);
+}
+
+.cabecalho-cartao-rotina {
+  padding: 16px;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.titulo-rotina h3 {
+  margin: 0 0 6px 0;
+  color: var(--texto-primario);
+  font-size: 16px;
+}
+
+.datas-rotina {
+  color: var(--texto-secundario);
+  font-size: 12px;
+}
+
+.info-rotina {
+  padding: 12px 16px;
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--texto-secundario);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.acoes-rotina {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+}
+
+.botao-acao {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--cor-borda);
+  background: var(--fundo-cartao);
+  color: var(--texto-primario);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.botao-acao:hover {
+  background: var(--fundo-hover);
+}
+
+.botao-deletar {
+  color: var(--cor-perigo);
+  border-color: var(--cor-perigo);
+}
+.botao-deletar:hover {
+  background: var(--cor-perigo);
+  color: white;
+}
+
+.estado-vazio {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--fundo-cartao);
+  border-radius: 12px;
+  border: 2px dashed var(--cor-borda);
+}
+
+.estado-vazio h3 { color: var(--texto-primario); }
+.estado-vazio p { color: var(--texto-secundario); }
+
+/* notificação de Sincronização */
+.status-sincronizacao {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 16px 24px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  animation: deslizarEntrada 0.3s ease-out;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Tipos de Status */
+.sinc-carregando {
+  background-color: #3b82f6;
+}
+
+.sinc-sucesso {
+  background-color: var(--cor-sucesso);
+}
+
+.sinc-erro {
+  background-color: var(--cor-perigo); 
+}
+
+@keyframes deslizarEntrada {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Botão Tema */
+.botao-tema {
+  background: transparent;
+  border: 1px solid var(--cor-borda);
+  font-size: 1.2rem;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--texto-primario);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.botao-tema:hover {
+  background-color: var(--fundo-hover);
+  border-color: var(--cor-primaria);
+}
+
+/* @audit-ok - 2.2 responsivo */
+@media (max-width: 640px) {
+  .cabecalho-rotina .conteudo-cabecalho { flex-direction: column; gap: 15px; }
+  .lista-rotinas { grid-template-columns: 1fr; }
+}

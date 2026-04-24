@@ -135,3 +135,40 @@
   .cabecalho-login h1 { font-size: 24px; }
   .descricao-login { font-size: 13px; }
 }
+
+/* formularios */
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.inputs {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--cor-borda);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--texto-primario);
+  background-color: var(--fundo-cartao);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.inputs:focus {
+  border-color: var(--cor-primaria);
+}
+
+.divisor {
+  text-align: center;
+  color: var(--texto-secundario);
+  font-size: 14px;
+  margin: 15px 0;
+}
+
+.cadastro {
+  margin-top: 20px;
+  text-align: center;
+}
