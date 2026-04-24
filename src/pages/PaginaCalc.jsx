@@ -5,7 +5,6 @@ import './PaginaCalc.css';
 
 export const PaginaCalc = () => {
   const navegar = useNavigate();
-
   return (
     <div className="fundo-preto">
       <div className="container">

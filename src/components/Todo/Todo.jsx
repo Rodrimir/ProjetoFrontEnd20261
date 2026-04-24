@@ -10,11 +10,9 @@ export const Todo = ({ todo, onAddPasso, onTogglePasso, onDelPasso, onDelTodo })
     setTextoPasso('');
   };
 
-  // Verifica se a tarefa tem passos E se TODOS eles estão marcados como 'done: true'
   const todosPassosConcluidos = todo.passos.length > 0 && todo.passos.every(p => p.done);
 
   return (
-    // Se todos os passos estiverem concluídos, adiciona a classe "todo-concluido" para mudar o visual
     <div className={`todo-card ${todosPassosConcluidos ? 'todo-concluido' : ''}`}>
       <div className="todo-header">
         <h3>{todo.titulo}</h3>
@@ -35,7 +33,7 @@ export const Todo = ({ todo, onAddPasso, onTogglePasso, onDelPasso, onDelTodo })
         {todo.passos.map(passo => (
           <li key={passo.id} className={passo.done ? 'passo-feito' : ''}>
             <span onClick={() => onTogglePasso(todo.id, passo.id)}>
-              {passo.done ? '✅ ' : '🔲 '} {passo.texto}
+              {passo.done ? ' v ' : ' x '} {passo.texto}
             </span>
             <button onClick={() => onDelPasso(todo.id, passo.id)}>x</button>
           </li>
