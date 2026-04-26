@@ -2,6 +2,7 @@ import React from 'react';
 import { Todo } from '../Todo/Todo.jsx';
 import { useTodo } from '../../Contexts/TodoContext.jsx';
 
+export const ListTodos = () => {
   const { listTodos } = useTodo();
 
   return (
