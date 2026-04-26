@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTodo } from '../../Contexts/TodoContext.jsx';
 import './Todo.css';
 
-export const Todo = ({ todo, onAddPasso, onTogglePasso, onDelPasso, onDelTodo }) => {
+export const Todo = ({ todo }) => {
   const [textoPasso, setTextoPasso] = useState('');
+  const { addPasso, togglePasso, delPasso, delTodo } = useTodo();
+  const navegar = useNavigate();
 
   const handleAddPasso = () => {
     if (textoPasso.trim() === '') return;
-    onAddPasso(todo.id, textoPasso);
+    addPasso(todo.id, textoPasso);
     setTextoPasso('');
   };
 
@@ -16,7 +20,8 @@ export const Todo = ({ todo, onAddPasso, onTogglePasso, onDelPasso, onDelTodo })
     <div className={`todo-card ${todosPassosConcluidos ? 'todo-concluido' : ''}`}>
       <div className="todo-header">
         <h3>{todo.titulo}</h3>
-        <button onClick={() => onDelTodo(todo.id)} className="btn-del-todo">Excluir Tarefa</button>
+        <button onClick={() => navegar(`/todo/${todo.id}`)} style={{ padding: '8px 12px', fontSize: '0.8rem', backgroundColor: 'var(--cor-primaria)' }}>Ver</button>
+        <button onClick={() => delTodo(todo.id)} className="btn-del-todo">Excluir</button>
       </div>
 
       <div className="add-passo">
@@ -32,10 +37,10 @@ export const Todo = ({ todo, onAddPasso, onTogglePasso, onDelPasso, onDelTodo })
       <ul className="lista-passos">
         {todo.passos.map(passo => (
           <li key={passo.id} className={passo.done ? 'passo-feito' : ''}>
-            <span onClick={() => onTogglePasso(todo.id, passo.id)}>
-              {passo.done ? ' v ' : ' x '} {passo.texto}
+            <span onClick={() => togglePasso(todo.id, passo.id)}>
+              {passo.done ? '✓' : '○'} {passo.texto}
             </span>
-            <button onClick={() => onDelPasso(todo.id, passo.id)}>x</button>
+            <button onClick={() => delPasso(todo.id, passo.id)} title="Excluir passo">✕</button>
           </li>
         ))}
       </ul>

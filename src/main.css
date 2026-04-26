@@ -1,9 +1,7 @@
 /* Estilos Globais e Definição de Temas */
 
 :root {
-  /* light mode (default)
-  
-     @audit-ok - 5.8 Design e Consistência */
+  /* light mode (default) */
 
   /* Cores de estilo */
 
@@ -57,8 +55,6 @@
 
 /* dark mode */
 
-/* @audit-info 2.3 - Interatividade com JavaScript aplicando o tema sem reload de pagina */
-
 [data-theme="dark"] {
   /* Cores de estilo */
   --cor-primaria: #818cf8;     
@@ -111,8 +107,6 @@ a {
   transition: color 0.2s;
 }
 
-/* @audit-ok - 5.3  CSS Modular e Organizado
- */
 a:hover {
   color: var(--cor-secundaria);
   text-decoration: underline;
@@ -131,12 +125,10 @@ button {
   transition: background-color 0.25s, transform 0.2s;
 }
 
-/* @audit-ok - 5.3  CSS Modular e Organizado */
 button:hover {
   background-color: var(--cor-primaria-hover);
 }
 
-/* @audit-ok - 5.1 Acessibilidade */
 button:focus-visible {
   outline: 2px solid var(--cor-primaria);
   outline-offset: 2px;

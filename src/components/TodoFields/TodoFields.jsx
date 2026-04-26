@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { useTodo } from '../../Contexts/TodoContext.jsx';
 import './TodoFields.css';
 
-export const TodoFields = ({ onAdd }) => {
+export const TodoFields = () => {
   const [texto, setTexto] = useState('');
+  const { addTodo } = useTodo();
 
   const handleAdd = () => {
     if (texto.trim() === '') return;
-    onAdd(texto);
+    addTodo(texto);
     setTexto('');
   };
 

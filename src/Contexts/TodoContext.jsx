@@ -2,22 +2,21 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const TodoContext = createContext();
 
+const STORAGE_KEY = 'minhas_tarefas';
+
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTodo = () => {
-  const context = useContext(TodoContext);
-  if (!context) {
-    throw new Error('useTodo must be used within a TodoProvider');
-  }
-  return context;
+  return useContext(TodoContext);
 };
 
 export const TodoProvider = ({ children }) => {
   const [listTodos, setListTodos] = useState(() => {
-    const salvos = localStorage.getItem('minhas_tarefas');
+    const salvos = localStorage.getItem(STORAGE_KEY);
     return salvos ? JSON.parse(salvos) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem('minhas_tarefas', JSON.stringify(listTodos));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(listTodos));
   }, [listTodos]);
 
   const addTodo = (titulo) => {

@@ -1,9 +1,219 @@
 .container-todo-page {
   width: 100%;
-  max-width: 600px;
-  background-color: #1a1a1a;
-  padding: 30px;
+  max-width: 1200px;
+  background-color: var(--fundo-cartao);
+  padding: 40px;
   border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  margin-top: 50px;
+  box-shadow: var(--sombra-g);
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.todo-page-title {
+  color: var(--cor-primaria);
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: bold;
+}
+
+.todo-fields-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.todo-fields {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  max-width: 700px;
+}
+
+.todo-fields input {
+  flex: 1;
+  padding: 14px 20px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 10px;
+  background-color: var(--fundo-entrada);
+  color: var(--texto-primario);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.todo-fields input:focus {
+  border-color: var(--cor-primaria);
+}
+
+.todo-fields button {
+  padding: 14px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.todo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  align-items: start;
+}
+
+.todo-grid > p {
+  grid-column: 1 / -1;
+}
+
+.todo-grid .todo-card {
+  background-color: var(--fundo-pagina);
+  border: 1px solid var(--cor-borda);
+  color: var(--texto-primario);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: var(--sombra-m);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.3s ease;
+}
+
+.todo-grid .todo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sombra-g);
+}
+
+.todo-grid .todo-concluido {
+  border-color: var(--cor-sucesso);
+  background-color: rgba(16, 185, 129, 0.05);
+}
+
+.todo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.todo-header h3 {
+  font-size: 1.3rem;
+  color: var(--texto-primario);
+  word-break: break-word;
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+.btn-del-todo {
+  background-color: var(--cor-perigo);
+  font-size: 0.8rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.btn-del-todo:hover {
+  background-color: #dc2626;
+}
+
+.add-passo {
+  display: flex;
+  gap: 10px;
+}
+
+.add-passo input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 8px;
+  background-color: var(--fundo-entrada);
+  color: var(--texto-primario);
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.add-passo input:focus {
+  border-color: var(--cor-primaria);
+}
+
+.add-passo button {
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+}
+
+.lista-passos {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lista-passos li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--fundo-cartao);
+  color: var(--texto-primario);
+  border: 1px solid var(--cor-borda);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: background-color 0.2s;
+}
+
+.lista-passos li:hover {
+  background-color: var(--fundo-hover);
+}
+
+.lista-passos li span {
+  cursor: pointer;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+}
+
+.passo-feito span {
+  text-decoration: line-through;
+  color: var(--cor-sucesso);
+  opacity: 0.8;
+}
+
+.lista-passos li button {
+  background: transparent;
+  color: var(--texto-secundario);
+  border: none;
+  font-size: 1.1rem;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.lista-passos li button:hover {
+  color: var(--cor-perigo);
+  background: rgba(239, 68, 68, 0.1);
+  transform: scale(1.1);
+}
+
+@media (max-width: 1024px) {
+  .todo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .container-todo-page {
+    padding: 20px;
+    margin: 20px auto;
+  }
+  .todo-fields {
+    flex-direction: column;
+  }
+  .todo-grid {
+    grid-template-columns: 1fr;
+  }
 }
