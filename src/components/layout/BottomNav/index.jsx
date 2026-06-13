@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Target, Store, Play, User, BarChart2, Check } from 'lucide-react';
-import { useMockData } from '../../../contexts/MockDataContext';
 import { useCurrentHabit } from '../../../contexts/CurrentHabitContext';
 import { useToast } from '../../../contexts/ToastContext';
 import {
@@ -14,15 +13,13 @@ import {
 
 const BottomNav = () => {
   const navigate = useNavigate();
-  const { db, activeHabitId } = useMockData();
-  const { setCurrentHabit } = useCurrentHabit();
+  const { currentHabit: activeHabit } = useCurrentHabit();
   const { addToast } = useToast();
 
-  const activeHabit = db.habits.find(h => h.id === activeHabitId);
   const isCompleted = activeHabit && activeHabit.status === 'COMPLETED';
 
   const handlePlay = () => {
-    if (!activeHabitId) {
+    if (!activeHabit) {
       addToast('Nenhum hábito selecionado para focar.', 'error');
       return;
     }
@@ -30,10 +27,9 @@ const BottomNav = () => {
       addToast('Esta tarefa já foi concluída hoje! 🎉', 'success');
       return;
     }
-    if (activeHabit) {
-      setCurrentHabit(activeHabit);
-      navigate('/pretask');
-    }
+    
+    // O currentHabit já está setado, só precisamos navegar
+    navigate('/pretask');
   };
 
   return (

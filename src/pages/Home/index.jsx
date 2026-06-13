@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Play, Check } from 'lucide-react';
 import { useCurrentHabit } from '../../contexts/CurrentHabitContext';
-import { useMockData } from '../../contexts/MockDataContext';
 import { useThemeToggle } from '../../contexts/ThemeToggleContext';
+import { getDashboard } from '../../services/api';
 import solFlutuando from '../../assets/sol_flutuando.webp';
 import luaFlutuando from '../../assets/lua_flutuando.png';
 import gotinhaNormal from '../../assets/gotinha/normal.png';
@@ -30,35 +30,48 @@ import {
   StartButton,
   DoneButton
 } from './styles';
+
 const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef(null);
   const navigate = useNavigate();
   const { setCurrentHabit } = useCurrentHabit();
-  const { db, setActiveHabitId } = useMockData();
   const { isDark } = useThemeToggle();
   const [localHabits, setLocalHabits] = useState([]);
+
   useEffect(() => {
-    if (db && db.habits) {
-      let data = [...db.habits];
-      data.sort((a, b) => {
-        if (a.status === 'COMPLETED' && b.status !== 'COMPLETED') return 1;
-        if (b.status === 'COMPLETED' && a.status !== 'COMPLETED') return -1;
-        if (!a.proximo_vencimento || !b.proximo_vencimento) return 0;
-        return new Date(a.proximo_vencimento) - new Date(b.proximo_vencimento);
-      });
-      setLocalHabits(data);
-      setLoading(false);
-    }
-  }, [db]);
+    const loadData = async () => {
+      try {
+        const response = await getDashboard();
+        // Assume API returns { habits: [...] } or an array directly
+        let data = response.data.habits || response.data || [];
+        if (Array.isArray(data)) {
+          data.sort((a, b) => {
+            if (a.status === 'COMPLETED' && b.status !== 'COMPLETED') return 1;
+            if (b.status === 'COMPLETED' && a.status !== 'COMPLETED') return -1;
+            if (!a.proximo_vencimento || !b.proximo_vencimento) return 0;
+            return new Date(a.proximo_vencimento) - new Date(b.proximo_vencimento);
+          });
+          setLocalHabits(data);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar dashboard:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
+
   useEffect(() => {
-    if (localHabits.length > 0) {
-      setActiveHabitId(localHabits[activeIndex]?.id);
+    if (localHabits.length > 0 && localHabits[activeIndex]) {
+      setCurrentHabit(localHabits[activeIndex]);
     } else {
-      setActiveHabitId(null);
+      setCurrentHabit(null);
     }
-  }, [activeIndex, localHabits, setActiveHabitId]);
+  }, [activeIndex, localHabits, setCurrentHabit]);
+
   const handleScroll = () => {
     if (carouselRef.current) {
       const scrollLeft = carouselRef.current.scrollLeft;
@@ -66,6 +79,7 @@ const HomeScreen = () => {
       setActiveIndex(Math.round(scrollLeft / width));
     }
   };
+
   const getAvatarExpression = (habit) => {
     if (habit.status === 'COMPLETED') return 'feliz';
     if (!habit.proximo_vencimento) return 'normal';
@@ -91,7 +105,6 @@ const HomeScreen = () => {
     
     if (folder === 'gotinha' && expression === 'normal' && suffix === '') {
       return (
-        // @audit-info : Crie pelo menos um componente com elementos nativos do ReactJS para CSS. (style, object)
         <div style={{ position: 'relative', width: '160px', height: '160px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <img src={gotinhaNormal} alt="Gotinha Normal" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </div>
@@ -122,7 +135,9 @@ const HomeScreen = () => {
       </div>
     );
   };
+
   if (loading) return <div style={{ padding: '24px', textAlign: 'center' }}>Carregando...</div>;
+
   return (
     <HomeContainer>
       <LocalHeader />
@@ -208,4 +223,5 @@ const HomeScreen = () => {
     </HomeContainer>
   );
 };
+
 export default HomeScreen;

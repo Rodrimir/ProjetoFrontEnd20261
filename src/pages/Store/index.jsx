@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ShieldAlert, ShieldCheck } from 'lucide-react';
-import { useMockData } from '../../contexts/MockDataContext';
+import { getDashboard, buyShield as apiBuyShield } from '../../services/api';
 import { useToast } from '../../contexts/ToastContext';
 import {
   StoreContainer,
@@ -25,25 +25,49 @@ import {
 } from './styles';
 
 const Store = () => {
-  const { db, buyShield } = useMockData();
   const { addToast } = useToast();
   const [selectedHabitId, setSelectedHabitId] = useState('');
+  const [habits, setHabits] = useState([]);
+  const [loading, setLoading] = useState(true);
   
-  const activeHabits = db.habits.filter(h => h.status !== 'ARCHIVED' && h.status !== 'COMPLETED');
+  const loadHabits = async () => {
+    try {
+      const response = await getDashboard();
+      const data = response.data.habits || response.data || [];
+      if (Array.isArray(data)) {
+        setHabits(data);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar hábitos na loja:", error);
+      addToast('Erro ao carregar dados da loja.', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const handleBuyShield = () => {
+  useEffect(() => {
+    loadHabits();
+  }, []);
+
+  const activeHabits = habits.filter(h => h.status !== 'ARCHIVED' && h.status !== 'COMPLETED');
+
+  const handleBuyShield = async () => {
     if (!selectedHabitId) {
       addToast('Selecione um hábito.', 'error');
       return;
     }
-    const success = buyShield(selectedHabitId);
-    if (success) {
+    
+    try {
+      await apiBuyShield(selectedHabitId);
       addToast('Escudo comprado com sucesso para o hábito!', 'success');
       setSelectedHabitId('');
-    } else {
+      loadHabits(); // Recarrega para atualizar os saldos
+    } catch (error) {
       addToast('Erro ao comprar escudo. Moedas insuficientes?', 'error');
     }
   };
+
+  if (loading) return <div style={{ padding: '24px', textAlign: 'center' }}>Carregando loja...</div>;
 
   return (
     <StoreContainer>
@@ -85,14 +109,14 @@ const Store = () => {
       <InventorySection>
         <InventoryTitle>Seus Escudos Atuais</InventoryTitle>
         <InventoryList>
-          {db.habits.filter(h => h.status !== 'ARCHIVED').map(h => (
+          {habits.filter(h => h.status !== 'ARCHIVED').map(h => (
             <InventoryItem key={h.id}>
               <ItemInfo>
                 <ItemTitle>{h.titulo}</ItemTitle>
-                <ItemSubtitle>Saldo: {h.moedas_locais} moedas</ItemSubtitle>
+                <ItemSubtitle>Saldo: {h.moedas_locais || 0} moedas</ItemSubtitle>
               </ItemInfo>
               <ItemCount>
-                {h.bloqueios_acumulados} <ShieldCheck size={20} />
+                {h.bloqueios_acumulados || 0} <ShieldCheck size={20} />
               </ItemCount>
             </InventoryItem>
           ))}

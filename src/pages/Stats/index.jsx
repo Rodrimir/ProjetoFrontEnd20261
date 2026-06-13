@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { Search, Flame, Target } from 'lucide-react';
-import { useMockData } from '../../contexts/MockDataContext';
+import { useCurrentHabit } from '../../contexts/CurrentHabitContext';
+import { getWeeklyStats } from '../../services/api';
 import {
   StatsContainer,
   Title,
@@ -21,32 +22,50 @@ import {
 } from './styles';
 
 const Stats = () => {
-  const { db, activeHabitId } = useMockData();
+  const { currentHabit: habit } = useCurrentHabit();
   const [data, setData] = useState([]);
-  const [habit, setHabit] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (activeHabitId && db) {
-      const selected = db.habits.find(h => h.id === activeHabitId);
-      setHabit(selected);
+    const loadStats = async () => {
+      if (!habit) {
+        setLoading(false);
+        return;
+      }
       
-      const isTempo = selected?.tipo_medida === 'TEMPO';
-      const meta = selected?.meta_base || 1;
-      
-      const mockWeeklyData = [
-        { name: 'Seg', valor: isTempo ? meta * 0.8 : meta * 1.1 },
-        { name: 'Ter', valor: isTempo ? meta * 1.2 : meta * 0.9 },
-        { name: 'Qua', valor: meta },
-        { name: 'Qui', valor: 0 },
-        { name: 'Sex', valor: isTempo ? meta * 1.5 : meta * 0.5 },
-        { name: 'Sáb', valor: isTempo ? meta * 0.2 : meta },
-        { name: 'Dom', valor: meta }
-      ];
-      setData(mockWeeklyData);
-    } else {
-      setHabit(null);
-    }
-  }, [activeHabitId, db]);
+      try {
+        setLoading(true);
+        // Em um cenário real de API, você poderia passar o habit.id para getWeeklyStats(habit.id)
+        const response = await getWeeklyStats();
+        
+        // Se a API retornar dados reais, usaremos. 
+        // Caso contrário, montamos um chart baseado na meta do hábito ativo.
+        if (response.data && response.data.length > 0) {
+           setData(response.data);
+        } else {
+           // Fallback UI data
+           const isTempo = habit.tipo_medida === 'TEMPO';
+           const meta = habit.meta_base || 1;
+           const fallbackData = [
+             { name: 'Seg', valor: isTempo ? meta * 0.8 : meta * 1.1 },
+             { name: 'Ter', valor: isTempo ? meta * 1.2 : meta * 0.9 },
+             { name: 'Qua', valor: meta },
+             { name: 'Qui', valor: 0 },
+             { name: 'Sex', valor: isTempo ? meta * 1.5 : meta * 0.5 },
+             { name: 'Sáb', valor: isTempo ? meta * 0.2 : meta },
+             { name: 'Dom', valor: meta }
+           ];
+           setData(fallbackData);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar estatísticas:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadStats();
+  }, [habit]);
 
   if (!habit) {
     return (
@@ -63,12 +82,14 @@ const Stats = () => {
   }
 
   const isTempo = habit.tipo_medida === 'TEMPO';
-  const maxRecord = Math.max(...data.map(d => d.valor));
+  const maxRecord = data.length > 0 ? Math.max(...data.map(d => d.valor)) : 0;
   
   const formatMedida = (valor) => {
     if (isTempo) return `${Math.round(valor / 60)} min`;
-    return `${valor} ${habit.categoria === 'AGUA' ? 'ml' : 'vezes'}`;
+    return `${Math.round(valor)} ${habit.categoria === 'AGUA' ? 'ml' : 'vezes'}`;
   };
+
+  if (loading) return <div style={{ padding: '24px', textAlign: 'center' }}>Carregando estatísticas...</div>;
 
   return (
     <StatsContainer>
@@ -76,13 +97,12 @@ const Stats = () => {
       <HabitTitle>{habit.titulo}</HabitTitle>
 
       <ContentWrapper>
-        
         <GridRow>
           <StatCard>
             <CardHeader>
               <Flame size={16} color="var(--warning-color)" /> Dias Seguidos
             </CardHeader>
-            <CardValue $large>{habit.dias_seguidos}</CardValue>
+            <CardValue $large>{habit.dias_seguidos || 0}</CardValue>
           </StatCard>
           
           <StatCard>

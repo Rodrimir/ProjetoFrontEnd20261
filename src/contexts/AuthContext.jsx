@@ -1,38 +1,72 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getAuthToken, setAuthToken, clearAuthToken } from '../utils/storage';
-import { login as apiLogin, register as apiRegister } from '../services/api';
+import { login as apiLogin, register as apiRegister, getDashboard } from '../services/api';
+import { setAuthToken, clearAuthToken, getAuthToken } from '../utils/storage';
+
 const AuthContext = createContext();
+
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const storedToken = getAuthToken();
-    if (storedToken) {
-      setToken(storedToken);
-    }
-    setLoading(false);
+    const verifyAuth = async () => {
+      const token = getAuthToken();
+      if (!token) {
+        setIsAuthenticated(false);
+        setLoading(false);
+        return;
+      }
+      
+      try {
+        await getDashboard();
+        setIsAuthenticated(true);
+      } catch (error) {
+        setIsAuthenticated(false);
+        clearAuthToken();
+      } finally {
+        setLoading(false);
+      }
+    };
+    verifyAuth();
   }, []);
+
   const login = async (data) => {
-    const response = await apiLogin(data);
-    const newToken = response.data.token; 
-    setToken(newToken);
-    setAuthToken(newToken);
-  };
-  const register = async (data) => {
-    const response = await apiRegister(data);
-    if (response.data && response.data.token) {
-      setToken(response.data.token);
-      setAuthToken(response.data.token);
+    const payload = {
+      email: data.email,
+      password: data.senha
+    };
+    const response = await apiLogin(payload);
+    const token = response.data.token;
+    if (token) {
+      setAuthToken(token);
+      setIsAuthenticated(true);
     }
   };
+
+  const register = async (data) => {
+    const payload = {
+      nome: data.nome,
+      email: data.email,
+      password: data.senha
+    };
+    const response = await apiRegister(payload);
+    const token = response.data.token;
+    if (token) {
+      setAuthToken(token);
+      setIsAuthenticated(true);
+    }
+  };
+
   const logout = () => {
-    setToken(null);
+    setIsAuthenticated(false);
     clearAuthToken();
   };
+
   return (
-    <AuthContext.Provider value={{ token, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
 export const useAuth = () => useContext(AuthContext);

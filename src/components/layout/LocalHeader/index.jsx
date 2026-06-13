@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Coins, Shield, Plus, Flame } from 'lucide-react';
-import { useMockData } from '../../../contexts/MockDataContext';
+import { useCurrentHabit } from '../../../contexts/CurrentHabitContext';
 import {
   HeaderContainer,
   CoinsWrapper,
@@ -12,12 +12,11 @@ import {
 
 const LocalHeader = () => {
   const navigate = useNavigate();
-  const { db, activeHabitId } = useMockData();
+  const { currentHabit: activeHabit } = useCurrentHabit();
   
-  const activeHabit = db.habits.find(h => h.id === activeHabitId);
-  const moedas = activeHabit ? activeHabit.moedas_locais : 0;
-  const escudos = activeHabit ? activeHabit.bloqueios_acumulados : 0;
-  const diasSeguidos = activeHabit ? activeHabit.dias_seguidos : 0;
+  const moedas = activeHabit ? activeHabit.moedas_locais || 0 : 0;
+  const escudos = activeHabit ? activeHabit.bloqueios_acumulados || 0 : 0;
+  const diasSeguidos = activeHabit ? activeHabit.dias_seguidos || 0 : 0;
 
   return (
     <HeaderContainer>
@@ -32,7 +31,7 @@ const LocalHeader = () => {
       </FlameWrapper>
 
       <ShieldButton 
-        onClick={() => navigate('/profile')}
+        onClick={() => navigate('/store')}
         aria-label="Bloqueios e Escudos"
       >
         <Shield size={20} />

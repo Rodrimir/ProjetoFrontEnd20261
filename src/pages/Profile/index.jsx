@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useMockData } from '../../contexts/MockDataContext';
 import { useThemeToggle } from '../../contexts/ThemeToggleContext';
 import { useToast } from '../../contexts/ToastContext';
+import { updateProfile } from '../../services/api';
 import { Shield, ShieldAlert, Moon, Sun, Globe } from 'lucide-react';
 import {
   ProfileContainer,
@@ -43,10 +43,16 @@ const Profile = () => {
     setIsSubmitting(true);
     
     try {
-      await new Promise(r => setTimeout(r, 800));
+      await updateProfile({
+        nome: formData.nome,
+        fusoHorario: formData.fusoHorario,
+        ...(formData.novaSenha && { senhaAtual: formData.senhaAtual, novaSenha: formData.novaSenha })
+      });
       addToast('Perfil atualizado com sucesso!', 'success');
+      setFormData(prev => ({ ...prev, senhaAtual: '', novaSenha: '' }));
     } catch (err) {
-      addToast('Erro ao atualizar perfil.', 'error');
+      console.error("Erro ao atualizar perfil", err);
+      addToast('Erro ao atualizar perfil. Verifique seus dados.', 'error');
     } finally {
       setIsSubmitting(false);
     }

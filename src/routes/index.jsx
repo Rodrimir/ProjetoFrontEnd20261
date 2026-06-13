@@ -14,10 +14,11 @@ import Fail from '../pages/Fail';
 import Stats from '../pages/Stats';
 import Store from '../pages/Store';
 
+// @audit-ok Componente que garante acesso às páginas restritas apenas para usuários autenticados (com token válido)
 const ProtectedRoute = ({ children }) => {
-  const { token, loading } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   if (loading) return <div>Carregando...</div>;
-  if (!token) return <Navigate to="/login" replace />;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
   return children;
 };
 
